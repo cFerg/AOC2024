@@ -6,7 +6,25 @@ import kotlin.io.path.readText
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = Path("src/$name.txt").readText().trim().lines()
+fun input(name: String) = Path("src/$name.txt").readText().trim().lines()
+/**
+ * Reads lines from the given input txt file, and groups them as Integers per line.
+ */
+fun inputAsNumbers(name: String) = Path("src/$name.txt").readText().trim().lines().fastMap{ row -> row.split("\\s+".toRegex()).fastMap{ word -> word.toInt()}.toMutableList()}
+/**
+ * Reads lines from the given input txt file, and groups them vertically as Integers (Kept as a List to allow for destructuring)
+ */
+fun inputAsNumbersByColumn(name: String): MutableList<MutableList<Int>> {
+    val lines = mutableListOf<MutableList<Int>>()
+
+    Path("src/$name.txt").readText().trim().lines().fastForEach{ row ->
+        row.split("\\s+".toRegex()).fastForEachIndexed { col, num ->
+            lines.getOrNull(col)?.add(num.toInt()) ?: lines.add(mutableListOf(num.toInt()))
+        }
+    }
+
+    return lines
+}
 
 /**
  * Converts string to md5 hash.
@@ -116,8 +134,22 @@ inline fun <T> List<T>.fastFirstOrNull(predicate: (T) -> Boolean): T? {
  * Returns the sum of all values produced by [selector] function applied to each element in the
  * list.
  */
-inline fun <T> List<T>.fastSumBy(selector: (T) -> Int): Int {
+inline fun <T> List<T>.fastSum(selector: (T) -> Int): Int {
     var sum = 0
+
+    fastForEach { element ->
+        sum += selector(element)
+    }
+
+    return sum
+}
+
+/**
+ * Returns the sum of all values produced by [selector] function applied to each element in the
+ * list.
+ */
+inline fun <T> List<T>.fastSumLong(selector: (T) -> Int): Long {
+    var sum = 0.toLong()
 
     fastForEach { element ->
         sum += selector(element)

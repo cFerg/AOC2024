@@ -1,39 +1,20 @@
 import kotlin.math.abs
 
 fun main() {
-    val (testLeft,testRight) = setup("Day01_test")
+    //Testing lines - If any fails, it throws an error
+    val (testLeft, testRight) = inputAsNumbersByColumn("Day01_test")
+    testLeft.sort()
+    testRight.sort()
     check(part1(testLeft.zip(testRight)) == 11)
     check(part2(testLeft,testRight) == 31L)
 
-    val (left,right) = setup("Day01")
+    //Runs part 1 and 2
+    val (left,right) = inputAsNumbersByColumn("Day01")
+    left.sort()
+    right.sort()
     part1(left.zip(right)).println()
     part2(left, right).println()
 }
 
-fun setup(file: String): Pair<MutableList<Int>, MutableList<Int>> {
-    val input = readInput(file)
-    val left = mutableListOf<Int>()
-    val right = mutableListOf<Int>()
-    input.fastForEach {
-        it.split(" ").apply {
-            left += first().toInt()
-            right += last().toInt()
-        }
-    }
-    left.sort()
-    right.sort()
-
-    return Pair(left,right)
-}
-
-fun part1(pair: List<Pair<Int,Int>>) = pair.fastSumBy { abs(it.first - it.second) }
-
-fun part2(left: MutableList<Int>, right: MutableList<Int>): Long {
-    var similarity = 0L
-    left.fastForEach { i ->
-        val amount = right.count{it == i}
-        similarity += i * amount
-    }
-
-    return similarity
-}
+fun part1(pair: List<Pair<Int,Int>>) = pair.fastSum { abs(it.first - it.second) }
+fun part2(left: MutableList<Int>, right: MutableList<Int>) = left.fastSumLong { it * right.count{ a -> a == it} }
