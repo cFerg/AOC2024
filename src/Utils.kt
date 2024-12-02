@@ -45,6 +45,38 @@ fun numberInputColumnGrouped(name: String, columnSorted:Boolean = false): Mutabl
 }
 
 /**
+ * Checks if a given list has the elements ordered in either direction
+ */
+fun <T: Comparable<T>> isOrdered(list: List<T>): Boolean {
+    return (isAscending(list) || isDescending(list))
+}
+
+/**
+ * Checks if a given list has elements increment
+ */
+fun <T: Comparable<T>> isAscending(list: List<T>): Boolean {
+    if (list.isEmpty() || list.size == 1) return true
+
+    return list.zipWithNext().all{it.first < it.second}
+}
+
+/**
+ * Checks if a given list has elements decrement
+ */
+fun <T : Comparable<T>> isDescending(list: List<T>): Boolean {
+    if (list.isEmpty() || list.size == 1) return true
+
+    return list.zipWithNext().all{it.first > it.second}
+}
+
+/**
+ * Added, as a way to drop at a specific index
+ */
+fun <T> List<T>.dropAt(index: Int) = this.filterIndexed { i, _ ->
+    i != index
+}
+
+/**
  * Converts string to md5 hash.
  */
 fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteArray()))
