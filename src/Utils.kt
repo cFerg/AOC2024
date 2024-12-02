@@ -6,21 +6,39 @@ import kotlin.io.path.readText
 /**
  * Reads lines from the given input txt file.
  */
-fun input(name: String) = Path("src/$name.txt").readText().trim().lines()
+fun stringInput(name: String, grouped:Boolean = false, groupsSorted:Boolean = false) = Path("src/$name.txt").readText().trim().lines().fastMap{
+    when {
+        grouped -> it.split("\\s+".toRegex()).toMutableList().apply{if (groupsSorted) sort()}
+        else -> it
+    }
+}
+
 /**
  * Reads lines from the given input txt file, and groups them as Integers per line.
  */
-fun inputAsNumbers(name: String) = Path("src/$name.txt").readText().trim().lines().fastMap{ row -> row.split("\\s+".toRegex()).fastMap{ word -> word.toInt()}.toMutableList()}
+fun numberInput(name: String, rowSorted:Boolean = false) = Path("src/$name.txt").readText().trim().lines().fastMap{
+    row -> row.split("\\s+".toRegex()).fastMap{
+        word -> word.toInt()
+    }.toMutableList().apply {
+        when {
+            rowSorted -> sort()
+        }
+    }
+}
 /**
  * Reads lines from the given input txt file, and groups them vertically as Integers (Kept as a List to allow for destructuring)
  */
-fun inputAsNumbersByColumn(name: String): MutableList<MutableList<Int>> {
+fun numberInputColumnGrouped(name: String, columnSorted:Boolean = false): MutableList<MutableList<Int>> {
     val lines = mutableListOf<MutableList<Int>>()
 
     Path("src/$name.txt").readText().trim().lines().fastForEach{ row ->
         row.split("\\s+".toRegex()).fastForEachIndexed { col, num ->
             lines.getOrNull(col)?.add(num.toInt()) ?: lines.add(mutableListOf(num.toInt()))
         }
+    }
+
+    when {
+        columnSorted -> lines.fastForEach { it.sort() }
     }
 
     return lines
