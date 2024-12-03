@@ -6,7 +6,7 @@ import kotlin.io.path.readText
 /**
  * Reads lines from the given input txt file.
  */
-fun stringInput(name: String, grouped:Boolean = false, groupsSorted:Boolean = false) = Path("src/$name.txt").readText().trim().lines().fastMap{
+fun stringInput(day: Int, grouped:Boolean = false, groupsSorted:Boolean = false, test:Boolean = false) = Path("src/input/${if (test) "test/" else ""}Day$day.txt").readText().trim().lines().fastMap{
     when {
         grouped -> it.split("\\s+".toRegex()).toMutableList().apply{if (groupsSorted) sort()}
         else -> it
@@ -16,7 +16,7 @@ fun stringInput(name: String, grouped:Boolean = false, groupsSorted:Boolean = fa
 /**
  * Reads lines from the given input txt file, and groups them as Integers per line.
  */
-fun numberInput(name: String, rowSorted:Boolean = false) = Path("src/$name.txt").readText().trim().lines().fastMap{
+fun numberInput(day: Int, rowSorted:Boolean = false, test:Boolean = false) = Path("src/input/${if (test) "test/" else ""}Day$day.txt").readText().trim().lines().fastMap{
     row -> row.split("\\s+".toRegex()).fastMap{
         word -> word.toInt()
     }.toMutableList().apply {
@@ -28,10 +28,10 @@ fun numberInput(name: String, rowSorted:Boolean = false) = Path("src/$name.txt")
 /**
  * Reads lines from the given input txt file, and groups them vertically as Integers (Kept as a List to allow for destructuring)
  */
-fun numberInputColumnGrouped(name: String, columnSorted:Boolean = false): MutableList<MutableList<Int>> {
+fun numberInputColumnGrouped(day: Int, columnSorted:Boolean = false, test:Boolean = false): MutableList<MutableList<Int>> {
     val lines = mutableListOf<MutableList<Int>>()
 
-    Path("src/$name.txt").readText().trim().lines().fastForEach{ row ->
+    Path("src/input/${if (test) "test/" else ""}Day$day.txt").readText().trim().lines().fastForEach{ row ->
         row.split("\\s+".toRegex()).fastForEachIndexed { col, num ->
             lines.getOrNull(col)?.add(num.toInt()) ?: lines.add(mutableListOf(num.toInt()))
         }
