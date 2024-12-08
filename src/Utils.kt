@@ -6,12 +6,14 @@ import kotlin.io.path.readText
 /**
  * Reads lines from the given input txt file.
  */
-fun stringInput(day: Int, grouped:Boolean = false, groupsSorted:Boolean = false, test:Boolean = false) = Path("src/input/${if (test) "test/" else ""}Day$day.txt").readText().trim().lines().fastMap{
-    when {
-        grouped -> it.split("\\s+".toRegex()).toMutableList().apply{if (groupsSorted) sort()}
-        else -> it
-    }
+fun stringInputGrouped(day: Int, groupsSorted:Boolean = false, test:Boolean = false) = Path("src/input/${if (test) "test/" else ""}Day$day.txt").readText().trim().lines().fastMap{
+    it.split("\\s+".toRegex()).toMutableList().apply{if (groupsSorted) sort()}
 }
+
+/**
+ * Reads lines from the given input txt file.
+ */
+fun stringInput(day: Int, test:Boolean = false) = Path("src/input/${if (test) "test/" else ""}Day$day.txt").readText().trim().lines()
 
 /**
  * Reads lines from the given input txt file, and groups them as Integers per line.

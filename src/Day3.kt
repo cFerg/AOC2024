@@ -23,12 +23,12 @@ fun main(){
     }
 
     //Testing lines - If any fails, it throws an error
-    val test = stringInput(3, test = true).toString()
+    val test = stringInputGrouped(3, test = true).toString()
     check(challenge(test).first == 161L)
     check(challenge(test).second == 48L)
 
     //Runs part 1 and 2
-    val input = stringInput(3).toString()
+    val input = stringInputGrouped(3).toString()
     challenge(input).first.println()
     challenge(input).second.println()
 }
