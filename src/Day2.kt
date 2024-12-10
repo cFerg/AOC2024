@@ -10,12 +10,12 @@ fun main() {
     }
 
     //Testing lines - If any fails, it throws an error
-    val test = numberInput(2, test = true)
+    val test = spacedNumberInput(2, test = true)
     check(part1(test) == 2)
     check(part2(test) == 4)
 
     //Runs part 1 and 2
-    val input = numberInput(2)
+    val input = spacedNumberInput(2)
     part1(input).println()
     part2(input).println()
 }

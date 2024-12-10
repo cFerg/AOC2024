@@ -1,6 +1,7 @@
 import java.math.BigInteger
 import java.security.MessageDigest
 import kotlin.io.path.Path
+import kotlin.io.path.readBytes
 import kotlin.io.path.readText
 
 /**
@@ -16,9 +17,14 @@ fun stringInputGrouped(day: Int, groupsSorted:Boolean = false, test:Boolean = fa
 fun stringInput(day: Int, test:Boolean = false) = Path("src/input/${if (test) "test/" else ""}Day$day.txt").readText().trim().lines()
 
 /**
+ * Reads a single line from a given input, and separates the digits from a number into individual Ints
+ */
+fun numberInput(day: Int, test:Boolean = false) = Path("src/input/${if (test) "test/" else ""}Day$day.txt").readBytes().map{ it.toInt() % 48}
+
+/**
  * Reads lines from the given input txt file, and groups them as Integers per line.
  */
-fun numberInput(day: Int, rowSorted:Boolean = false, test:Boolean = false) = Path("src/input/${if (test) "test/" else ""}Day$day.txt").readText().trim().lines().fastMap{
+fun spacedNumberInput(day: Int, rowSorted:Boolean = false, test:Boolean = false) = Path("src/input/${if (test) "test/" else ""}Day$day.txt").readText().trim().lines().fastMap{
     row -> row.split("\\s+".toRegex()).fastMap{
         word -> word.toInt()
     }.toMutableList().apply {
